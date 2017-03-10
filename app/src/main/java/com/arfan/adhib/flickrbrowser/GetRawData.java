@@ -20,14 +20,24 @@ class GetRawData extends AsyncTask<String, Void, String> {
     private static final String TAG = "GetRawData";
 
     private DownloadStatus mDownloadStatus;
+    private final OnDownloadComplete mCallback;
 
-    public GetRawData() {
+    interface OnDownloadComplete{
+        void onDonwloadComplete(String data, DownloadStatus status);
+    }
+
+    public GetRawData(OnDownloadComplete callback) {
         this.mDownloadStatus = DownloadStatus.IDLE;
+        mCallback = callback;
     }
 
     @Override
     protected void onPostExecute(String s) {
         Log.d(TAG, "onPostExecute: parameter = " + s);
+        if (mCallback != null){
+            mCallback.onDonwloadComplete(s ,mDownloadStatus);
+        }
+        Log.d(TAG, "onPostExecute: ends");
     }
 
     @Override
@@ -49,7 +59,7 @@ class GetRawData extends AsyncTask<String, Void, String> {
             connection.setRequestMethod("GET");
             connection.connect();
             int response = connection.getResponseCode();
-            Log.d(TAG, "doInBackground: The response code was" + response);
+            Log.d(TAG, "doInBackground: The response code was :" + response);
 
             StringBuilder result = new StringBuilder();
 
