@@ -1,3 +1,3 @@
 # FlickrBrowser 
 
-Belajar membuat applikasi Flick
+Belajar membuat aplikasi Flick
